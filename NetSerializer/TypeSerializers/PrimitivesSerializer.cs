@@ -27,6 +27,7 @@ namespace NetSerializer
 				typeof(float), typeof(double),
 				typeof(string),
 				typeof(DateTime),
+				typeof(DateTimeOffset),
 				typeof(byte[]),
 				typeof(Decimal),
 			};

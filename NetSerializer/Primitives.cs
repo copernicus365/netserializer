@@ -259,6 +259,27 @@ namespace NetSerializer
 		}
 #endif
 
+		// https://github.com/dotnet/coreclr/blob/master/src/mscorlib/src/System/DateTimeOffset.cs
+		public static void WritePrimitive(Stream stream, DateTimeOffset value)
+		{
+			long v = value.UtcTicks;
+			short offsetMinutes = (short)value.Offset.Minutes; // internally DTO saves TS as an Int16, so canNOT be greater
+			WritePrimitive(stream, v);
+			WritePrimitive(stream, offsetMinutes);
+
+		}
+
+		public static void ReadPrimitive(Stream stream, out DateTimeOffset value)
+		{
+			long ticks;
+			short offsetMinutes;
+			ReadPrimitive(stream, out ticks);
+			ReadPrimitive(stream, out offsetMinutes);
+			value = new DateTimeOffset(ticks, new TimeSpan(0, offsetMinutes, 0));
+		}
+
+
+
 		public static void WritePrimitive(Stream stream, DateTime value)
 		{
 			long v = value.ToBinary();
